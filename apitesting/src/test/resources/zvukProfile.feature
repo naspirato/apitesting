@@ -1,4 +1,4 @@
-Feature: sample GET /api/tiny/profile/ test for zvuk.com
+Feature: sample GET /api/tiny/ tests for zvuk.com
 
   Background:
     * url 'https://zvuk.com/api/tiny'
