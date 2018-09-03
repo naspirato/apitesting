@@ -28,4 +28,4 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     And form field releases = firstid
     When method get
     Then status 200
-    And match response == {"result":{"playlists":{},"radio_waves":{},"releases":{"1124972":{"artist_ids":[866709],"title":"Fucking Thing - EP","image":{"src":"http:\/\/cdn42.zvooq.com\/pic?type=release&id=1124972&size={size}&ext=jpg","palette":"#FCFCFB,#060505,#5D4D47","palette_bottom":"#F9F9F6,#9D9C9C,#E6C5A3"},"search_title":"Fucking Thing - EP","availability":6,"search_credits":"Dome, Der Holtz","track_ids":[11472556,11348929,11332361,11318750],"artist_names":["Dome, Der Holtz"],"credits":"Dome, Der Holtz","label_id":185835,"template":"{0}","has_image":true,"date":20110719,"price":60,"type":"single","id":1124972,"genre_ids":[1]}},"labels":{},"tracks":{},"artists":{},"users":{}}}
+    And match response.result.releases[*].id contains firstid
