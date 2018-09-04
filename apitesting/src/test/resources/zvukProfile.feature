@@ -4,6 +4,8 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     * url 'https://zvuk.com/api/tiny'
 
   Scenario: get profile
+    * def ArrayList = Java.type('java.util.ArrayList')
+    * def type = 'playlist'
 
     Given path 'profile'
     When method get
@@ -19,7 +21,7 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     And form field name = 'grid3-trends'
     When method get
     Then status 200
-    And match response == {"result": {"meta": [{"include": "track :first 5 user", "type": "playlist", "ids": ['#notnull']}, {"type": "banner", "ids": [""]}], "page": {"expire": 0, "sections": [{"header": {"action": {"url": "/sapi/grid?url=%2Fapi%2Ftiny%2Fgrid%2Fcontent%3Fname%3DPage%2B1%2BFeatured%2Breleases%26title%3D%25D0%2593%25D0%25BB%25D0%25B0%25D0%25B2%25D0%25BD%25D1%258B%25D0%25B5%2B%25D0%25B0%25D0%25BB%25D1%258C%25D0%25B1%25D0%25BE%25D0%25BC%25D1%258B%2B%25D0%25BD%25D0%25B5%25D0%25B4%25D0%25B5%25D0%25BB%25D0%25B8", "page": "grid", "freeban_featured": true}, "title": '#notnull'}, "type": "carousel_new", "target": ["device:all"], "enabled": true, "data": [{"style": "center-text", "target": ["device:all"], "weight": 1, "close_gesture_disabled": false, "messages": [{"action": {"id": '#notnull', "freeban_featured": true, "name": "open-release"}, "branded_background": {"width": 840, "src": "http://zvooq.com/static/avatar/banner/bce/10f/UtUBtc2zSceCAhL00gwJ_g.png", "height": 540, "palette_bottom": "#000000"}, "text": "Sweetener", "title": '#notnull'}], "actions": [], "source": "zvooq", "pin_actions": false, "allow_close_button": false, "type": "banner", "id": "", "enabled": true}, {"style": "center-text", "target": ["device:all"], "weight": 1, "close_gesture_disabled": false, "messages": [{"action": {"id": '#notnull', "name": "open-playlist"}, "branded_background": {"src": "http://zvooq.com/static/avatar/banner/f0f/0a0/m_cRH7jPR2GbC7FjPWNhaw.png", "height": 540, "width": 840, "palette_bottom": "#000000"}, "text": '#notnull', "title": '#notnull'}], "source": "zvooq", "pin_actions": false, "allow_close_button": false, "type": "banner", "id": "", "enabled": true}]}, {"target": ["device:all"], "data": [{"featured": true, "type": "playlist", "id": '#notnull', "featured_lead_text": null}], "enabled": true, "header": {"title_en": "New releases", "title": '#notnull'}, "type": "content", "view": "only-tracks"}]}}}
+    And match response.result.meta[*].type contains type
 
     * def firstid = response.result.meta[0].ids[0]
     * url 'https://zvooq.com/sapi'
@@ -29,3 +31,26 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     When method get
     Then status 200
     And match response.result.releases[*].id contains firstid
+
+    * def tracksid =  get response.result.releases[*].track_ids
+    #* def list = new ArrayList()
+    * def join = function(list) { return list.toString()}
+    * url 'https://zvuk.com/api/tiny'
+
+    #add playlist
+    Given path 'playlist'
+    And form field name = 'newPlaylist'
+    And form field tracks = join(tracksid)
+    When method get
+    Then status 200
+    #And match response == {'result':{'token':'#notnull','id':'#notnull', 'is_anonymous':true}}
+
+    * def newplaylistid = response.result.ids
+
+    #update playlist
+
+    #delete playlist
+    Given path 'delete-playlist'
+    And form field id = 'newplaylistid'
+    When method get
+    Then status 200
