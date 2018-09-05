@@ -4,8 +4,6 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     * url 'https://zvuk.com/api/tiny'
 
   Scenario: get profile
-    * def ArrayList = Java.type('java.util.ArrayList')
-    * def type = 'playlist'
 
     Given path 'profile'
     When method get
@@ -21,7 +19,7 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     And form field name = 'grid3-trends'
     When method get
     Then status 200
-    And match response.result.meta[*].type contains type
+    And match response.result.meta[*].type contains 'playlist'
 
     * def firstid = response.result.meta[0].ids[0]
     * url 'https://zvooq.com/sapi'
@@ -32,16 +30,24 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     Then status 200
     And match response.result.releases[*].id contains firstid
 
-    * def tracksid =  get response.result.releases[*].track_ids
-    #* def list = new ArrayList()
-    * def join = function(list) { return list.toString()}
+    * def trackids =  get response.result.releases[*].track_ids[0]
+    * url 'https://zvuk.com/api/tiny/login'
+
+    Given path 'email'
+    And form field email = 'dm+1@zvooq.com'
+    And form field password = 'Dimon4ik'
+    When method post
+    Then status 200
+
+    * def token = response.result.token
     * url 'https://zvuk.com/api/tiny'
 
     #add playlist
     Given path 'playlist'
+    And header X-Auth-Token = token
     And form field name = 'newPlaylist'
-    And form field tracks = join(tracksid)
-    When method get
+    And form field tracks = trackids[0],trackids[0]
+    When method post
     Then status 200
     #And match response == {'result':{'token':'#notnull','id':'#notnull', 'is_anonymous':true}}
 
@@ -51,6 +57,7 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
 
     #delete playlist
     Given path 'delete-playlist'
+    And header X-Auth-Token = token
     And form field id = 'newplaylistid'
-    When method get
+    When method post
     Then status 200
