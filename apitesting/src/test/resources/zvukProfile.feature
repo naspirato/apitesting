@@ -2,13 +2,15 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
 
   Background:
     * url 'https://zvuk.com/api/tiny'
+    * def playlist = 'newPlaylist'
 
   Scenario: get profile
 
     Given path 'profile'
     When method get
     Then status 200
-    And match response == {'result':{'token':'#notnull','id':'#notnull', 'is_anonymous':true}}
+    And match response contains token: '#notnull'
+    And match response contains id: '#notnull'
 
     Given path 'settings'
     When method get
@@ -45,12 +47,15 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     #add playlist
     Given path 'playlist'
     And header X-Auth-Token = token
-    And param name = 'newPlaylist'
+    And param name = playlist
     And request {}
     And form field tracks = trackids[0]
     When method post
     Then status 200
-    #And match response == {'result':{'token':'#notnull','id':'#notnull', 'is_anonymous':true}}
+    And match response.result.search_title contains playlist
+    And match response.result.title contains playlist
+    And match response.result.track_ids contains trackids[0]
+    And match response contains id: '#notnull'
 
     * def newplaylistid = response.result.id
 
