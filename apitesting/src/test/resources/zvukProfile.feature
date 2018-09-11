@@ -21,7 +21,6 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
 
     Given path 'grid'
     And form field name = 'grid3-trends'
-    #And form field name = 'zvuk_grid_special'
     When method get
     Then status 200
     And match response.result.playlists[*] contains id: '#notnull'
@@ -78,7 +77,6 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     And match response.result.id contains newplaylistid
 
     * def newplaylistid = response.result.id
-
 
     #delete playlist
     Given path 'delete-playlist'
