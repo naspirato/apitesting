@@ -55,7 +55,7 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     Then status 200
     And match response.result.search_title contains playlist
     And match response.result.title contains playlist
-    And match response.result.track_ids contains trackids[0]
+    And match response.result.track_ids contains trackids
     And match response contains id: '#notnull'
 
     * def newplaylistid = response.result.id
@@ -71,12 +71,11 @@ Feature: sample GET /api/tiny/ tests for zvuk.com
     And form field tracks = trackids[3],trackids[2],trackids[1],trackids[0]
     When method post
     Then status 200
+    #And match response.result.updated != updatedtime
     And match response.result.search_title contains playlist
     And match response.result.title contains playlist
-    And match response.result.track_ids contains trackids[0]
+    And match response.result.track_ids contains trackids
     And match response.result.id contains newplaylistid
-
-    * def newplaylistid = response.result.id
 
     #delete playlist
     Given path 'delete-playlist'

@@ -38,10 +38,7 @@
     <build>
         <testResources>
             <testResource>
-                <directory>src/test/java</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
+                <directory>src/test/resources</directory>
             </testResource>
         </testResources>
         <plugins>
