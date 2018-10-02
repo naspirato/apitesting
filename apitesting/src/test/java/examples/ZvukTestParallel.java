@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 @CucumberOptions(tags = {"~@ignore"})
-public class TestParallel {
+public class ZvukTestParallel {
 
   /*  @Test
     public void testParallel() {
