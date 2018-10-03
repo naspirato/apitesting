@@ -38,7 +38,7 @@
     <build>
         <testResources>
             <testResource>
-                <directory>src/test/java</directory>
+                <directory>src/test</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
@@ -54,8 +54,32 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <compilerArgument>-Werror</compilerArgument>
+                    <includes>
+                        <include>**/*ZvukRun*.java</include>
+                    </includes>
                 </configuration>
             </plugin>
+            <!--plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>3.9.0</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>cucumber-jvm-example</projectName>
+                            <outputDirectory>${project.build.directory}/site/cucumber-reports</outputDirectory>
+                            <cucumberOutput>${project.build.directory}/cucumber.json</cucumberOutput>
+                            <enableFlashCharts>false</enableFlashCharts>
+                            <skippedFails>true</skippedFails>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin-->
         </plugins>        
     </build>       
     
