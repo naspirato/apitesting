@@ -58,8 +58,17 @@ Feature: sample GET api tiny tests for zvuk
     And match response.result.track_ids contains trackids
     And match response contains id: '#notnull'
 
+    * def newplaylistresponse = response.result
     * def newplaylistid = response.result.id
     * def updatedtime = response.result.updated
+
+    #get playlist
+    Given path 'playlists'
+    And header X-Auth-Token = token
+    And form field ids = newplaylistid
+    When method get
+    Then status 200
+    And match response.result.playlists[*] contains newplaylistresponse
 
     #update playlist
     Given path 'playlist'
@@ -76,6 +85,16 @@ Feature: sample GET api tiny tests for zvuk
     And match response.result.title contains playlist
     And match response.result.track_ids contains trackids
     And match response.result.id contains newplaylistid
+
+    * def updplaylistresponse = response.result
+
+    #get playlist
+    Given path 'playlists'
+    And header X-Auth-Token = token
+    And form field ids = newplaylistid
+    When method get
+    Then status 200
+    And match response.result.playlists[*] contains updplaylistresponse
 
     #delete playlist
     Given path 'delete-playlist'

@@ -9,7 +9,8 @@ import java.util.List;
 import net.masterthought.cucumber.Configuration;
 import net.masterthought.cucumber.ReportBuilder;
 import org.apache.commons.io.FileUtils;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 @CucumberOptions(tags = {"~@ignore"})
@@ -26,7 +27,7 @@ public class ParallelZvukTest {
       String karateOutputPath = "target/surefire-reports";
       KarateStats stats = CucumberRunner.parallel(getClass(), 5, karateOutputPath);
       generateReport(karateOutputPath);
-      assertTrue("there are scenario failures", stats.getFailCount() == 0);
+      assertEquals("there are scenario failures", 0, stats.getFailCount());
     }
     public static void generateReport(String karateOutputPath) {
         Collection<File> jsonFiles = FileUtils.listFiles(new File(karateOutputPath), new String[] {"json"}, true);
